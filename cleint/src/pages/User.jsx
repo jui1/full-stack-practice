@@ -2,6 +2,7 @@ import { useState } from "react";
 import Searchbar from "../compoents/Searchbar";
 import Filterbox from "../compoents/Filterbox";
 import Pricefiltring from "../compoents/pricefiltring";
+import PriceSlider from "../compoents/PriceSlider";
 
 
 
@@ -44,6 +45,16 @@ const User = () => {
             price: 600,
         },
     ];
+
+
+    const products = [
+        { id: 1, name: "Phone", price: 5000 },
+        { id: 2, name: "Watch", price: 12000 },
+        { id: 3, name: "Shoes", price: 18000 },
+        { id: 4, name: "Laptop", price: 35000 },
+        { id: 5, name: "TV", price: 48000 },
+      ];
+
     //search by name, email , 
 
     const [Search, setSeatch] = useState("");
@@ -76,25 +87,40 @@ const User = () => {
     //     return true;
 
     // });
-    let filterBYPrice   = [...users];
+    let filterBYPrice = [...users];
 
-         if (price === "1000") {
-            filterBYPrice =  filterBYPrice.filter((user) => user.price <1000);
+    if (price === "1000") {
+        filterBYPrice = filterBYPrice.filter((user) => user.price < 1000);
 
-         } 
-        else if (price === "1000to5000") {
-            filterBYPrice =  filterBYPrice.filter((user) =>  user.price>=1000 && user.price<=5000);
-        }
-        else if (price === "above5000") {
-            filterBYPrice =  filterBYPrice.filter((user) => user.price>5000);
-        }
-        else if (price === "PriceLowtoHigh")  {
-            filterBYPrice =  filterBYPrice.sort((a,b) => a.price - b.price);
-        }
-        else if (price === "PriceHightoLow")  {
-            filterBYPrice =   filterBYPrice.sort((a,b) => b.price - a.price);
-        }
+    }
+    else if (price === "1000to5000") {
+        filterBYPrice = filterBYPrice.filter((user) => user.price >= 1000 && user.price <= 5000);
+    }
+    else if (price === "above5000") {
+        filterBYPrice = filterBYPrice.filter((user) => user.price > 5000);
+    }
+    else if (price === "PriceLowtoHigh") {
+        filterBYPrice = filterBYPrice.sort((a, b) => a.price - b.price);
+    }
+    else if (price === "PriceHightoLow") {
+        filterBYPrice = filterBYPrice.sort((a, b) => b.price - a.price);
+    }
+
+    //filter slider 
+
+    const [priceSlider, setPriceSlider] = useState([0, 50000]);
+    const filterSilder = products.filter((product) => {
      
+        return (
+            product.price >= priceSlider[0] && 
+            product.price <= priceSlider[1]
+        );
+
+
+    })
+
+
+
 
 
 
@@ -154,6 +180,19 @@ const User = () => {
                 ))
             }
 
+            <PriceSlider priceSlider={priceSlider}
+
+                setPriceSlider={setPriceSlider}
+            />
+            {
+                filterSilder.map((prodcut) =>(
+                    <div key={prodcut.id}>
+                    <p>{prodcut.name}</p>
+                    <p>{prodcut.price}</p>
+
+                    </div>
+                ))
+            }
 
 
 
