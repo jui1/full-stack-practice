@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState ,  } from "react";
 import Searchbar from "../compoents/Searchbar";
 import Filterbox from "../compoents/Filterbox";
 import Pricefiltring from "../compoents/pricefiltring";
@@ -119,9 +119,29 @@ const User = () => {
 
     })
 
+    //reset button 
 
+    const ResetButton=()=>{
+        setSeatch(""),
+        setRole(""),
+        setprice("All"),
+        setPriceSlider([0, 50000])
+    }
 
+    //for loding logic
 
+    const [loding , setLoding ]  = useState(true);
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            setLoding(false)
+        },3000)
+    },[]);
+
+    if(loding){
+        return("Loding..................");
+            
+    }
 
 
 
@@ -130,10 +150,12 @@ const User = () => {
 
 
         <div>
+       
             <h1>User Name</h1>
             <Searchbar Search={Search}
                 setSeatch={setSeatch}
             />
+            <button onClick={ResetButton}> Reset</button>
 
             {
                 filter.map((user) => (
