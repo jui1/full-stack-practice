@@ -1,4 +1,4 @@
-import { useEffect, useState ,  } from "react";
+import { useEffect, useState, } from "react";
 import Searchbar from "../compoents/Searchbar";
 import Filterbox from "../compoents/Filterbox";
 import Pricefiltring from "../compoents/pricefiltring";
@@ -53,7 +53,7 @@ const User = () => {
         { id: 3, name: "Shoes", price: 18000 },
         { id: 4, name: "Laptop", price: 35000 },
         { id: 5, name: "TV", price: 48000 },
-      ];
+    ];
 
     //search by name, email , 
 
@@ -110,9 +110,9 @@ const User = () => {
 
     const [priceSlider, setPriceSlider] = useState([0, 50000]);
     const filterSilder = products.filter((product) => {
-     
+
         return (
-            product.price >= priceSlider[0] && 
+            product.price >= priceSlider[0] &&
             product.price <= priceSlider[1]
         );
 
@@ -121,26 +121,26 @@ const User = () => {
 
     //reset button 
 
-    const ResetButton=()=>{
+    const ResetButton = () => {
         setSeatch(""),
-        setRole(""),
-        setprice("All"),
-        setPriceSlider([0, 50000])
+            setRole(""),
+            setprice("All"),
+            setPriceSlider([0, 50000])
     }
 
     //for loding logic
 
-    const [loding , setLoding ]  = useState(true);
+    const [loding, setLoding] = useState(true);
 
-    useEffect(()=>{
-        setTimeout(()=>{
+    useEffect(() => {
+        setTimeout(() => {
             setLoding(false)
-        },3000)
-    },[]);
+        }, 3000)
+    }, []);
 
-    if(loding){
-        return("Loding..................");
-            
+    if (loding) {
+        return ("Loding..................");
+
     }
 
 
@@ -150,7 +150,7 @@ const User = () => {
 
 
         <div>
-       
+
             <h1>User Name</h1>
             <Searchbar Search={Search}
                 setSeatch={setSeatch}
@@ -158,14 +158,16 @@ const User = () => {
             <button onClick={ResetButton}> Reset</button>
 
             {
-                filter.map((user) => (
+                filter.length === 0 ?
+                    (<h1 style={{color : "red"}}> No Product found</h1>)
+                    : filter.map((user) => (
 
-                    <div key={user.id}>
-                        <h3>{user.name}</h3>
-                        <p>{user.email}</p>
-                        <p>{user.role}</p>
-                    </div>
-                ))
+                        <div key={user.id}>
+                            <h3>{user.name}</h3>
+                            <p>{user.email}</p>
+                            <p>{user.role}</p>
+                        </div>
+                    ))
             }
 
             <h1>For Filter function </h1>
@@ -174,14 +176,16 @@ const User = () => {
                 setfilter={setRole}
             />
             {
-                filtedBy.map((user) => (
-                    <div key={user.id}>
-                        <p>{user.name}</p>
-                        <p>{user.email}</p>
-                        <p>{user.role}</p>
+                filtedBy.length === 0 ?
+                    (<h1 style={{color: "red"}}> No Product found</h1>)
+                    : filtedBy.map((user) => (
+                        <div key={user.id}>
+                            <p>{user.name}</p>
+                            <p>{user.email}</p>
+                            <p>{user.role}</p>
 
-                    </div>
-                ))
+                        </div>
+                    ))
             }
 
 
@@ -190,16 +194,19 @@ const User = () => {
                 setprricefil={setprice}
             />
             {
-                filterBYPrice.map((user) => (
-                    <div key={user.id}>
-                        <p>{user.name}</p>
-                        <p>{user.email}</p>
-                        <p>{user.role}</p>
-                        <p>{user.price}</p>
+                filterBYPrice.length === 0 ?
+                    (
+                        <h1 style={{color : "red"}}>No Product found </h1>
+                    ) : filterBYPrice.map((user) => (
+                        <div key={user.id}>
+                            <p>{user.name}</p>
+                            <p>{user.email}</p>
+                            <p>{user.role}</p>
+                            <p>{user.price}</p>
 
 
-                    </div>
-                ))
+                        </div>
+                    ))
             }
 
             <PriceSlider priceSlider={priceSlider}
@@ -207,13 +214,14 @@ const User = () => {
                 setPriceSlider={setPriceSlider}
             />
             {
-                filterSilder.map((prodcut) =>(
-                    <div key={prodcut.id}>
-                    <p>{prodcut.name}</p>
-                    <p>{prodcut.price}</p>
+                filterSilder.length === 0 ?
+                    (<h1 style={{color : "red"}}>No Product Found </h1>) : filterSilder.map((prodcut) => (
+                        <div key={prodcut.id}>
+                            <p>{prodcut.name}</p>
+                            <p>{prodcut.price}</p>
 
-                    </div>
-                ))
+                        </div>
+                    ))
             }
 
 
