@@ -3,6 +3,7 @@ import Searchbar from "../compoents/Searchbar";
 import Filterbox from "../compoents/Filterbox";
 import Pricefiltring from "../compoents/pricefiltring";
 import PriceSlider from "../compoents/PriceSlider";
+import Searchitem from "../compoents/Searchitem";
 
 
 
@@ -54,6 +55,18 @@ const User = () => {
         { id: 4, name: "Laptop", price: 35000 },
         { id: 5, name: "TV", price: 48000 },
     ];
+
+
+       //search crete 
+       const [searchh, setSearchh] = useState("");
+
+        const filtterout = products.filter((product)=>{
+            const  namesname= product.name.toLowerCase().includes(searchh.toLowerCase());
+            return namesname;
+        })
+
+
+
 
     //search by name, email , 
 
@@ -143,6 +156,7 @@ const User = () => {
 
     }
 
+ 
 
 
 
@@ -224,6 +238,18 @@ const User = () => {
                     ))
             }
 
+
+            <Searchitem searchh={searchh}   setSearchh={setSearchh} />
+            
+       {
+        filtterout.map((prodcut) =>(
+            <div key={prodcut.id}>
+                <p>{prodcut.name}</p>
+                <p>{prodcut.price}</p>
+            </div>
+
+        ))
+       }
 
 
 
