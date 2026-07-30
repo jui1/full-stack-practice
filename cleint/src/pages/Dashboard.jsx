@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AtozandZtoA from "../compoents/AtozandZtoA"
+import MultipleFilter from "../compoents/MultipleFilter"
 
 
 function Dashboard() {
@@ -69,6 +70,9 @@ function Dashboard() {
 return 0;
 
     }) 
+
+    //for multiple user 
+    const [multiplefiler , setmultiplefiler ] = useState("");
     
 
     return (
@@ -91,6 +95,8 @@ return 0;
 
                 ))
             }
+
+            <MultipleFilter multiplefiler={multiplefiler}  setmultiplefiler={setmultiplefiler}/>
 
 
         </>
