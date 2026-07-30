@@ -59,21 +59,37 @@ function Dashboard() {
     //a to z and z to a
     const [Filternope, setFilter] = useState("");
 
-    const filterfunc = [...users].sort((a,b)=>{
-        if(Filternope === "atoz"){
-            return  a.name.localeCompare(b.name);
+    const filterfunc = [...users].sort((a, b) => {
+        if (Filternope === "atoz") {
+            return a.name.localeCompare(b.name);
         }
-        else if(Filternope === "ztoa"){
+        else if (Filternope === "ztoa") {
             return b.name.localeCompare(a.name);
         }
 
-return 0;
+        return 0;
 
-    }) 
+    })
+    
 
     //for multiple user 
-    const [multiplefiler , setmultiplefiler ] = useState("");
-    
+    const [multipname, setmultiname] = useState("");
+    const [multiEmail, setmultiEmail] = useState("");
+    const [multiPrice, setmultiPrice] = useState("");
+    const [multipleRole, setmultiRole] = useState("");
+
+
+    const filterFunct = users.filter((user) => {
+        const name = user.name.toLowerCase().includes(multipname.toLowerCase());
+        const email = user.email.toLowerCase().includes(multiEmail.toLowerCase());
+        const price = user.price.toString().includes(multiPrice);
+        const role  = user.role.toLowerCase().includes(multipleRole.toLowerCase());
+
+
+        return name && email && price && role;
+
+    })
+
 
     return (
         <>
@@ -96,8 +112,24 @@ return 0;
                 ))
             }
 
-            <MultipleFilter multiplefiler={multiplefiler}  setmultiplefiler={setmultiplefiler}/>
+            <MultipleFilter multipname={multipname} setmultiname={setmultiname}
+                multiEmail={multiEmail} setmultiEmail={setmultiEmail}
+                multiPrice={multiPrice} setmultiPrice={setmultiPrice}
+                multipleRole={multipleRole} setmultiRole={setmultiRole}
+            />
 
+            {
+                filterFunct.map((user) => (
+                    <div key={user.id}>
+                        <p>{user.name}</p>
+                        <p>{user.email}</p>
+                        <p>{user.role}</p>
+                        <p>{user.price}</p>
+
+
+                    </div>
+                ))
+            }
 
         </>
 
