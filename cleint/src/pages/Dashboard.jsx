@@ -90,6 +90,20 @@ function Dashboard() {
 
     })
 
+    //for pagination
+
+    const [currentpage, setcurrentpage] = useState(1);
+    const itemPerpage = 3;
+    const startIndex = (currentpage -1) * itemPerpage;
+
+    const endIndex = startIndex + itemPerpage;
+    const currentUsers = users.slice(startIndex , endIndex);
+
+    const totalPage = Math.ceil(users.length/itemPerpage );
+
+
+
+
 
     return (
         <>
@@ -130,6 +144,40 @@ function Dashboard() {
                     </div>
                 ))
             }
+
+            <h1 style={{color : "revert-layer"}}> Pagination</h1>
+
+            {
+                currentUsers.map((user)=>(
+                    <div key={user.id}>
+                    <p>{user.name}</p>
+                    <p>{user.email}</p>
+                    <p>{user.price}</p>
+                    <p>{user.role}</p>
+
+                    </div>
+
+
+                ))
+            }
+
+            <button onClick={()=>setcurrentpage(currentpage-1)}
+            disabled={currentpage ===1}>
+                Prev
+            </button>
+            {Array.from({length :totalPage },(_,index)=>(
+                <button 
+                key={index}
+                onClick={() =>setcurrentpage(index+1)}>
+
+                {index+1}
+
+                </button>
+            ))}
+            <button onClick={() => setcurrentpage(currentpage+1)}
+            disabled={currentpage ===totalPage}>
+                Next
+            </button>
 
         </>
 
