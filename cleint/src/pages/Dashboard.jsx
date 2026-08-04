@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AtozandZtoA from "../compoents/AtozandZtoA"
 import MultipleFilter from "../compoents/MultipleFilter"
+import useDebounce from "../compoents/useDebounce"
 
 
 function Dashboard() {
@@ -104,6 +105,52 @@ function Dashboard() {
 
 
 
+    // for paginamtion 
+
+    //store the currect page 
+    // const [currect , setcurrect] = useState(1);
+    // //how make data will show in that page 
+    // const itempage = 2 ;
+
+
+    // const staetINDX = (currect-1 ) * itempage;
+
+    // const endINDX = staetINDX +currect;
+
+    
+//for use debounced 
+//Stores what user is typing
+const [search ,setsearch ] = useState("");
+//Stores API response
+const [todo , settodo] = useState([]);
+
+const debouncedSearch = useDebounce(search, 500);
+
+useEffect(()=>{
+    async function FetchTodos() {
+        const resp = await fetch("https://jsonplaceholder.typicode.com/todos");
+        const data = await resp.json();
+  
+        const filterd = data.filter((todo)=>{
+           return todo.title.toLowerCase().includes(debouncedSearch.toLowerCase());
+           
+        })
+
+        settodo(filterd);
+
+
+        
+
+        
+    }
+
+    FetchTodos();
+},[debouncedSearch])
+
+
+
+
+
 
     return (
         <>
@@ -179,6 +226,20 @@ function Dashboard() {
                 Next
             </button>
 
+
+
+            <h2 color="blue">Debounce Search</h2>
+            <input type="text" placeholder="search for todo" value={search} onChange={(e) => setsearch(e.target.value)}/>
+
+            {
+                todo.map((todo) =>(
+                    <div key={todo.id}>
+                        <p>{todo.title}</p>
+                        <p>{todo.completed ? "true" : "false"}</p>
+                    </div>
+
+                ))
+            }
         </>
 
     )
