@@ -71,7 +71,7 @@ function Dashboard() {
         return 0;
 
     })
-    
+
 
     //for multiple user 
     const [multipname, setmultiname] = useState("");
@@ -84,7 +84,7 @@ function Dashboard() {
         const name = user.name.toLowerCase().includes(multipname.toLowerCase());
         const email = user.email.toLowerCase().includes(multiEmail.toLowerCase());
         const price = user.price.toString().includes(multiPrice);
-        const role  = user.role.toLowerCase().includes(multipleRole.toLowerCase());
+        const role = user.role.toLowerCase().includes(multipleRole.toLowerCase());
 
 
         return name && email && price && role;
@@ -95,12 +95,12 @@ function Dashboard() {
 
     const [currentpage, setcurrentpage] = useState(1);
     const itemPerpage = 3;
-    const startIndex = (currentpage -1) * itemPerpage;
+    const startIndex = (currentpage - 1) * itemPerpage;
 
     const endIndex = startIndex + itemPerpage;
-    const currentUsers = users.slice(startIndex , endIndex);
+    const currentUsers = users.slice(startIndex, endIndex);
 
-    const totalPage = Math.ceil(users.length/itemPerpage );
+    const totalPage = Math.ceil(users.length / itemPerpage);
 
 
 
@@ -117,35 +117,36 @@ function Dashboard() {
 
     // const endINDX = staetINDX +currect;
 
-    
-//for use debounced 
-//Stores what user is typing
-const [search ,setsearch ] = useState("");
-//Stores API response
-const [todo , settodo] = useState([]);
 
-const debouncedSearch = useDebounce(search, 500);
+    //for use debounced 
+    //Stores what user is typing
+    const [search, setsearch] = useState("");
+    //Stores API response
+    const [todo, settodo] = useState([]);
 
-useEffect(()=>{
-    async function FetchTodos() {
-        const resp = await fetch("https://jsonplaceholder.typicode.com/todos");
-        const data = await resp.json();
-  
-        const filterd = data.filter((todo)=>{
-           return todo.title.toLowerCase().includes(debouncedSearch.toLowerCase());
-           
-        })
-
-        settodo(filterd);
+    const debouncedSearch = useDebounce(search, 500);
 
 
-        
+    useEffect(() => {
+        async function FetchTodos() {
+            const resp = await fetch("https://jsonplaceholder.typicode.com/todos");
+            const data = await resp.json();
 
-        
-    }
+            const filterd = data.filter((todo) => {
+                return todo.title.toLowerCase().includes(debouncedSearch.toLowerCase());
 
-    FetchTodos();
-},[debouncedSearch])
+            })
+
+            settodo(filterd);
+
+
+
+
+
+        }
+
+        FetchTodos();
+    }, [debouncedSearch])
 
 
 
@@ -192,15 +193,15 @@ useEffect(()=>{
                 ))
             }
 
-            <h1 style={{color : "revert-layer"}}> Pagination</h1>
+            <h1 style={{ color: "revert-layer" }}> Pagination</h1>
 
             {
-                currentUsers.map((user)=>(
+                currentUsers.map((user) => (
                     <div key={user.id}>
-                    <p>{user.name}</p>
-                    <p>{user.email}</p>
-                    <p>{user.price}</p>
-                    <p>{user.role}</p>
+                        <p>{user.name}</p>
+                        <p>{user.email}</p>
+                        <p>{user.price}</p>
+                        <p>{user.role}</p>
 
                     </div>
 
@@ -208,31 +209,31 @@ useEffect(()=>{
                 ))
             }
 
-            <button onClick={()=>setcurrentpage(currentpage-1)}
-            disabled={currentpage ===1}>
+            <button onClick={() => setcurrentpage(currentpage - 1)}
+                disabled={currentpage === 1}>
                 Prev
             </button>
-            {Array.from({length :totalPage },(_,index)=>(
-                <button 
-                key={index}
-                onClick={() =>setcurrentpage(index+1)}>
+            {Array.from({ length: totalPage }, (_, index) => (
+                <button
+                    key={index}
+                    onClick={() => setcurrentpage(index + 1)}>
 
-                {index+1}
+                    {index + 1}
 
                 </button>
             ))}
-            <button onClick={() => setcurrentpage(currentpage+1)}
-            disabled={currentpage ===totalPage}>
+            <button onClick={() => setcurrentpage(currentpage + 1)}
+                disabled={currentpage === totalPage}>
                 Next
             </button>
 
 
 
             <h2 color="blue">Debounce Search</h2>
-            <input type="text" placeholder="search for todo" value={search} onChange={(e) => setsearch(e.target.value)}/>
+            <input type="text" placeholder="search for todo" value={search} onChange={(e) => setsearch(e.target.value)} />
 
             {
-                todo.map((todo) =>(
+                todo.map((todo) => (
                     <div key={todo.id}>
                         <p>{todo.title}</p>
                         <p>{todo.completed ? "true" : "false"}</p>
