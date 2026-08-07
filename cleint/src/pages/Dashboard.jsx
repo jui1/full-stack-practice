@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, } from "react";
 import AtozandZtoA from "../compoents/AtozandZtoA"
 import MultipleFilter from "../compoents/MultipleFilter"
 import useDebounce from "../compoents/useDebounce"
@@ -165,37 +165,67 @@ function Dashboard() {
 
     //for deboucig 
     //store the typing 
-    const [searchh , setsearchh ] = useState("");
+    const [searchh, setsearchh] = useState("");
     //store the  data
-    const [storedata , setstoredata] = useState([]);
+    const [storedata, setstoredata] = useState([]);
 
-    const useDebounceed  = useDebouncee(searchh , 500);
+    const useDebounceed = useDebouncee(searchh, 500);
 
-    useEffect(()=>{
+    useEffect(() => {
         async function Feachtodos() {
             const response = await fetch("https://jsonplaceholder.typicode.com/todos");
             const data = await response.json();
 
-            const fitted = data.filter((todo)=>{
+            const fitted = data.filter((todo) => {
                 return todo.title.toLowerCase().includes(useDebounceed.toLowerCase());
             })
 
             setstoredata(fitted);
-            
+
         }
 
         Feachtodos();
 
-    } , [useDebounceed])
+    }, [useDebounceed])
 
 
 
 
 
 
+    function thothing(fn, d) {
+        let lastshwoingTime = 0;
+
+        return function (...args) {
+            const now = Date.now();
+            if (now - lastshwoingTime >= d) {
+                lastshwoingTime = now;
+                fn(...args);
+            }
+
+        }
+    }
+
+    const [throuthing, sethrouthing] = useState("");
+    const [throuthingg, sethrouthingg] = useState([]);
+    async function thoding(value) {
+
+        const resp = await fetch("https://jsonplaceholder.typicode.com/todos");
+        const data = await resp.json();
+
+        const filted = data.filter((todo) => {
+            return todo.title.toLowerCase().includes(value.toLowerCase());
 
 
+        })
 
+
+        sethrouthingg(filted);
+    }
+
+    const throttledSearch = useMemo(() => {
+        return thothing(thoding, 600)
+    }, []);
 
     return (
         <>
@@ -287,15 +317,35 @@ function Dashboard() {
             }
 
 
-            <h5 style={{color:"red"}}>Debounce Search part 2</h5>
-            <input  type="text" placeholder="search for todo......" value={searchh} onChange={(e) => setsearchh(e.target.value)}/>
+            <h5 style={{ color: "red" }}>Debounce Search part 2</h5>
+            <input type="text" placeholder="search for todo......" value={searchh} onChange={(e) => setsearchh(e.target.value)} />
             {
-                storedata.map((todo)=>(
+                storedata.map((todo) => (
                     <div key={todo.id}>
                         <p>{todo.title}</p>
                         <p>{todo.completed ? "true" : " false"}</p>
                     </div>
                 ))
+            }
+
+
+            <input
+                value={throuthing}
+                onChange={(e) => {
+                    sethrouthing(e.target.value);
+                    throttledSearch(e.target.value);
+                }}
+            />
+            {
+                throuthingg.length > 0 ? (
+                    throuthingg.map((e) => (
+                        <div key={e.id}>
+                            <p>{e.title}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No Data Found</p>
+                )
             }
         </>
 
