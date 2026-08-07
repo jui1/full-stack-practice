@@ -8,10 +8,11 @@ const useDebouncee = (seachh ,d) => {
             setdebouched(seachh)
         }, d);
      
-        return (
+        return () => {
             clearTimeout(Timer)
-        )
-    },[seachh , 500])
+        }
+        
+    },[seachh , d])
 
     return debouched;
   

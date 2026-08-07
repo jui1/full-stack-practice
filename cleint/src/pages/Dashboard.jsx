@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AtozandZtoA from "../compoents/AtozandZtoA"
 import MultipleFilter from "../compoents/MultipleFilter"
 import useDebounce from "../compoents/useDebounce"
-
+import useDebouncee from "../compoents/useDebouncee"
 
 function Dashboard() {
 
@@ -127,6 +127,7 @@ function Dashboard() {
     const debouncedSearch = useDebounce(search, 500);
 
 
+
     useEffect(() => {
         async function FetchTodos() {
             const resp = await fetch("https://jsonplaceholder.typicode.com/todos");
@@ -147,6 +148,49 @@ function Dashboard() {
 
         FetchTodos();
     }, [debouncedSearch])
+
+
+
+    //for deboucig 
+    // const [seachh , seseachh] = useState("");
+    // //to store the value 
+    // const [todoo , settodoo] = useState([]);
+
+    // const deboucheded = useDebouncee(seachh , 500);
+
+    // useEffect(()=>{
+
+    // })
+
+
+    //for deboucig 
+    //store the typing 
+    const [searchh , setsearchh ] = useState("");
+    //store the  data
+    const [storedata , setstoredata] = useState([]);
+
+    const useDebounceed  = useDebouncee(searchh , 500);
+
+    useEffect(()=>{
+        async function Feachtodos() {
+            const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+            const data = await response.json();
+
+            const fitted = data.filter((todo)=>{
+                return todo.title.toLowerCase().includes(useDebounceed.toLowerCase());
+            })
+
+            setstoredata(fitted);
+            
+        }
+
+        Feachtodos();
+
+    } , [useDebounceed])
+
+
+
+
 
 
 
@@ -239,6 +283,18 @@ function Dashboard() {
                         <p>{todo.completed ? "true" : "false"}</p>
                     </div>
 
+                ))
+            }
+
+
+            <h5 style={{color:"red"}}>Debounce Search part 2</h5>
+            <input  type="text" placeholder="search for todo......" value={searchh} onChange={(e) => setsearchh(e.target.value)}/>
+            {
+                storedata.map((todo)=>(
+                    <div key={todo.id}>
+                        <p>{todo.title}</p>
+                        <p>{todo.completed ? "true" : " false"}</p>
+                    </div>
                 ))
             }
         </>
